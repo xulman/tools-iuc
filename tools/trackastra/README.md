@@ -51,8 +51,8 @@ Automatically segments nuclei or cells using Cellpose v3, then performs tracking
 
 ```bash
 python trackastra_wrapper.py segment_and_track \
-    --zarr_path https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0101A/13457537.zarr/0 \
-    --scale_level 0 \
+    --zarr_path https://public.czbiohub.org/royerlab/zebrahub/imaging/single-objective/ZSNS001.ome.zarr/0 \
+    --scale_level 1 \
     --channel_coords 0 \
     --downscale_x 1.0 \
     --downscale_y 1.0 \
@@ -69,8 +69,8 @@ Assumes pre-existing segmentation in a separate channel/dimension.
 
 ```bash
 python trackastra_wrapper.py track \
-    --zarr_path https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0101A/13457537.zarr/0 \
-    --scale_level 0 \
+    --zarr_path https://public.czbiohub.org/royerlab/zebrahub/imaging/single-objective/ZSNS001.ome.zarr/0 \
+    --scale_level 1 \
     --raw_channel_coords 0 \
     --seg_channel_coords 1 \
     --downscale_x 1.0 \
@@ -175,13 +175,23 @@ Errors print to stderr with appropriate exit codes for Galaxy error detection.
 
 ## Online Zarr Datasets
 
-Ready-to-use test datasets from IDR (Image Data Resource):
+There are [numerous resources](https://ngff.openmicroscopy.org/resources/data/) with online .zarr datasets.
+A ready-to-use test dataset can be taken, e.g., from the [Zebrahub](https://zebrahub.sf.czbiohub.org/data):
 
 ```
-https://uk1s3.embassy.ebi.ac.uk/idr/zarr/v0.4/idr0101A/13457537.zarr/0
+https://public.czbiohub.org/royerlab/zebrahub/imaging/single-objective/ZSNS001.ome.zarr
 ```
 
-This dataset can be used directly as zarr_path for testing without downloading.
+Since zarr can hold multiple images, actual path to a (pyramidal) image is created
+by appending `/0` to take the first such image, or appending `/1` for the second
+image in that zarr, etc. As a result, the path
+
+```
+https://public.czbiohub.org/royerlab/zebrahub/imaging/single-objective/ZSNS001.ome.zarr/0
+```
+
+is what needs to be used directly as `zarr_path` for testing without downloading. In this particular
+case, consider also setting `scale_level = 1`.
 
 ## Advanced: Key Parameters Explained
 
@@ -253,6 +263,7 @@ python -u trackastra_wrapper.py segment_and_track \
 If you use Trackastra in published research, please cite:
 - Trackastra: Gallusser, B. & Weigert, M. (2024) Trackastra: Transformer-based cell tracking for live-cell microscopy. In *European conference on computer vision*, 467-484.
 - Cellpose: Stringer, C., Wang, T., Michaelos, M. & Pachitariu, M. (2021). Cellpose: a generalist algorithm for cellular segmentation. *Nature Methods*, 18(1), 100-106.
+- Zebrahub: Lange, M., Granados, A., VijayKumar, S., Bragantini, J., Ancheta, S., Santhosh, S., Borja, M., Kobayashi, H., McGeever, E., Solak, A.C. & Yang, B. (2023). Zebrahub–multimodal zebrafish developmental atlas reveals the state-transition dynamics of late-vertebrate pluripotent axial progenitors. *BioRxiv*, 2023-03.
 
 ## References
 
